@@ -22,28 +22,49 @@ var currentDayHeader = currentDay.format("dddd, MMMM Do, YYYY");
 var currentHour = currentDay.format("H");
 
 
-// * Create event handler that stores function to store users entries in entires array when they click the save button
-//      -holds time in array
-//      -holds entry in array
+// * Create event handler for every time the user clicks the save button:
+//      - pushes entry and time to entries array
+//      - saves entries array to local storage 
 
 $(document).ready(function() {
-    $(".input-group").on("submit", function() {
-        event.preventDefault();
-        console.log("clicked!");
-        console.log($("textarea").val());
 
-    })
+    $(".input-group").on("submit", function(event) {
+        event.preventDefault();
+
+        var entry = $(this).children("textarea").val()
+        var time = $(this).find("p").text();
+
+        entriesArr.push({ time: time, entry: entry });
+
+        JSONentriesArr = JSON.stringify(entriesArr);
+
+        localStorage.setItem("entries", JSONentriesArr);
+    });
+
 });
 
 
+// Create a function that pulls from local storage- only pull IF there is information to pull
+function getStorage() {
+    var entries = localStorage.getItem("entries");
+    var JSONentries = JSON.parse(entries);
 
+    if (JSONentries !== null) {
+        entriesArr = JSONentries;
+        renderEntries();
+    }
+};
 
-// * Create a function that stores entries array in local storage
+// Create a function that renders entries from local storage to the DOM
+function renderEntries() {
+    for (var i = 0; i < entriesArr.length; i++) {
+        if (entriesArr[i].time === $("#9-hour").text()) {
+            console.log("they match!")
+            $("#9-description").text(entriesArr[i].entry);
+        }
+    }
+};
 
-// * Create an event handler that listens to when a user clicks the submit button, and stores that entry in local storage
-
-// Create a function that renders the information from local storage and displays it on the DOM
-//      - only pull IF there is information to pull
 
 // Create a function that colors the time block based on what time of day it is:
 //      - past hour (if hour < currentHour)
@@ -66,11 +87,6 @@ function colorize() {
 
 
 
-
-
-
-
-
 // Create an initialize function that:
 //      - pulls users entries from local storage
 //      - calls function to render items from local storage to the DOM
@@ -80,23 +96,9 @@ function init() {
     // * Insert current day into HTML header
     currentDayEl.text(currentDayHeader);
     colorize();
+    getStorage();
 };
 
-
-
-// * Create debugger function
-var deBug = false;
-function deBugger() {
-    if (deBug === true) {
-        console.log(currentDay);
-        console.log(currentDayHeader);
-        console.log(currentHour);
-        console.log(hourEl.text());
-    }
-};
-
-// Run debugger function
-deBugger();
 
 // Call init function
 init();
