@@ -58,9 +58,11 @@ function getStorage() {
 // Create a function that renders entries from local storage to the DOM
 function renderEntries() {
     for (var i = 0; i < entriesArr.length; i++) {
-        if (entriesArr[i].time === $("#9-hour").text()) {
-            console.log("they match!")
-            $("#9-description").text(entriesArr[i].entry);
+        for (var j = 9; j < 18; j++) {
+            if (entriesArr[i].time === $("#" + j + "-hour").text()) {
+                console.log("they match!")
+                $("#" + j + "-description").text(entriesArr[i].entry);
+            }
         }
     }
 };
@@ -70,6 +72,7 @@ function renderEntries() {
 //      - past hour (if hour < currentHour)
 //      - current hour (if hour === currentHour)
 //      - future hours (if hour > current Hour)
+
 function colorize() {
     for (var i = 9; i < 18; i++) {
         var description = $("#" + i + "-description")
