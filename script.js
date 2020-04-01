@@ -1,66 +1,66 @@
-// * Create Timeblocks in HTML
-//      - 9AM-5PM
-// * Create submit buttons in HTML
-// * Style timeblocks/ buttons
+// Create Global Variables
+//  -needed elements from HTML
+//  -entries array
+//  -current day/time using moment object
 
-// * Get needed elements from HTML
 var currentDayEl = $("#currentDay");
 var hourEl = $(".hour");
-
-
-
-
-
-// * Create global variables
 var entriesArr = [];
-
-// * Create currentDay variable that stores the current day from the moment object
 var currentDay = moment();
-
-// Format current day to day of the week, month, date, and year
-var currentDayHeader = currentDay.format("dddd, MMMM Do, YYYY");
 var currentHour = currentDay.format("H");
+var currentDayHeader = currentDay.format("dddd, MMMM Do, YYYY");
 
 
-// * Create event handler for every time the user clicks the save button:
-//      - pushes entry and time to entries array
-//      - saves entries array to local storage 
-
+// Adds event handler for every time the user clicks a save button:
 $(document).ready(function() {
 
     $(".input-group").on("submit", function(event) {
         event.preventDefault();
 
+        // saves value of text area and time to variables
         var entry = $(this).children("textarea").val()
-        var time = $(this).find("p").text();
+        var timeVar = $(this).find("p").text();
 
-        entriesArr.push({ time: time, entry: entry });
+        // pushes entry and time to entries array
+        entriesArr.push({ time: timeVar, entry: entry });
 
+        // for (var i = 0; i < entriesArr.length; i++) {
+        //     if (entriesArr[i].time === timeVar) {
+
+        //     } else {
+        //         entriesArr.push({ time: timeVar, entry: entry });
+        //     }
+        // }
+
+        // saves entries array to local storage
         JSONentriesArr = JSON.stringify(entriesArr);
-
         localStorage.setItem("entries", JSONentriesArr);
     });
-
 });
 
 
-// Create a function that pulls from local storage- only pull IF there is information to pull
+// Defines a function that pulls entries from local storage and renders to DOM
 function getStorage() {
     var entries = localStorage.getItem("entries");
     var JSONentries = JSON.parse(entries);
 
+    // only save to array and render if there are entries stored in local storage
     if (JSONentries !== null) {
         entriesArr = JSONentries;
         renderEntries();
     }
 };
 
-// Create a function that renders entries from local storage to the DOM
+
+// Defines a function that renders entries from local storage to the DOM
 function renderEntries() {
+
+    // loops over entries array
     for (var i = 0; i < entriesArr.length; i++) {
+
+        // loops over hour elemnts from HTML - saves to correct time block if times match
         for (var j = 9; j < 18; j++) {
             if (entriesArr[i].time === $("#" + j + "-hour").text()) {
-                console.log("they match!")
                 $("#" + j + "-description").text(entriesArr[i].entry);
             }
         }
@@ -68,38 +68,37 @@ function renderEntries() {
 };
 
 
-// Create a function that colors the time block based on what time of day it is:
-//      - past hour (if hour < currentHour)
-//      - current hour (if hour === currentHour)
-//      - future hours (if hour > current Hour)
+// Defines a function that colors each time block 
+//  -by adding a different class
+//  -based on time of day compared to current hour
+function colorBlocks() {
 
-function colorize() {
+    // loops through description elements 
     for (var i = 9; i < 18; i++) {
-        var description = $("#" + i + "-description")
+        var descriptionEl = $("#" + i + "-description")
         var hour = parseInt(currentHour);
-        if (hour === parseInt(description.attr("data-time"))) {
-            description.addClass("present");
-        } else if (hour > parseInt(description.attr("data-time"))) {
-            description.addClass("past");
-        } else if (hour < parseInt(description.attr("data-time"))) {
-            description.addClass("future");
+        if (hour === parseInt(descriptionEl.attr("data-time"))) {
+            descriptionEl.addClass("present");
+        } else if (hour > parseInt(descriptionEl.attr("data-time"))) {
+            descriptionEl.addClass("past");
+        } else if (hour < parseInt(descriptionEl.attr("data-time"))) {
+            descriptionEl.addClass("future");
         };
     }
 };
 
 
-
-
-// Create an initialize function that:
-//      - pulls users entries from local storage
-//      - calls function to render items from local storage to the DOM
-//      - calls function that colors timeblocks based on time
-
+// Defines an initialize function
 function init() {
-    // * Insert current day into HTML header
-    currentDayEl.text(currentDayHeader);
-    colorize();
+
+    // pulls from local storage
     getStorage();
+
+    // Insert current day into header
+    currentDayEl.text(currentDayHeader);
+
+    // colors time blocks
+    colorBlocks();
 };
 
 

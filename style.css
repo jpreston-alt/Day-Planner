@@ -4,6 +4,7 @@ body {
   line-height: 1;
 }
 
+
 .form-control {
   border: none;
 }
@@ -23,6 +24,14 @@ textarea{
   color: black;
   border-radius: 0;
   border-bottom: 10px solid black;
+  background-color: rgb(248, 247, 247);
+}
+
+h1 {
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: 70px;
+  /* letter-spacing: .001em; */
 }
 
 .description{
@@ -44,22 +53,21 @@ textarea{
 .hour {
   background-color: #ffffff;
   color: #000000;
-  border-top: 1px dashed #000000;
+  border-top: 1px dotted #000000;
   padding: 10px;
 }
 
-.past {
+.past, .past:focus {
   background-color: #d3d3d3;
-  /* background-color: purple; */
-  color: white;
+  color: black;
 }
 
-.present {
+.present, .present:focus {
   background-color: #ff6961;
   color: white;
 }
 
-.future {
+.future, .future:focus {
   background-color: #77dd77;
   color: white;
 }
@@ -73,6 +81,14 @@ textarea{
   color: white;
 }
 
+.saveBtn:hover {
+  color: rgb(0, 0, 0);
+}
+
+.saveBtn:focus {
+  color: black;
+}
+
 .saveBtn i:hover {
   font-size: 20px;
   transition: all .3s ease-in-out;
@@ -81,12 +97,12 @@ textarea{
 
 /* NEW STYLES */
 
-
-
-
 @media only screen and (min-width: 320px) {
   .hour {
     width: 4em;
+  }
+  button {
+    width: 3em;
   }
 }
 
