@@ -4,7 +4,6 @@ body {
   line-height: 1;
 }
 
-
 .form-control {
   border: none;
 }
@@ -94,8 +93,7 @@ h1 {
 }
 
 
-/* NEW STYLES */
-
+/* Media Queries */
 @media only screen and (min-width: 0px) {
   .hour {
     width: 4em;
@@ -106,7 +104,7 @@ h1 {
   }
 
   h1 {
-    font-size: 46px;
+    font-size: 48px;
   }
 }
 

@@ -18,19 +18,16 @@ $(document).ready(function() {
         event.preventDefault();
 
         // saves value of text area and time to variables
-        var entry = $(this).children("textarea").val()
-        var timeVar = $(this).find("p").text();
+        var entry = $(this).find("textarea").val()
+        var timeVar = $(this).find(".hour").text();
 
-        // pushes entry and time to entries array
-        entriesArr.push({ time: timeVar, entry: entry });
+        // filter entries array so any entries with the same time are deleted
+        var filterArr = entriesArr.filter(function(e){
+            return e.time !== timeVar;
+        });
 
-        // for (var i = 0; i < entriesArr.length; i++) {
-        //     if (entriesArr[i].time === timeVar) {
-
-        //     } else {
-        //         entriesArr.push({ time: timeVar, entry: entry });
-        //     }
-        // }
+        // push new entry and time into entries array
+        entriesArr = filterArr.push({ time: timeVar, entry: entry });
 
         // saves entries array to local storage
         JSONentriesArr = JSON.stringify(entriesArr);
