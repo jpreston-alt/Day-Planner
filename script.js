@@ -27,7 +27,9 @@ $(document).ready(function() {
         });
 
         // push new entry and time into entries array
-        entriesArr = filterArr.push({ time: timeVar, entry: entry });
+        filterArr.push({ time: timeVar, entry: entry });
+
+        entriesArr = filterArr;
 
         // saves entries array to local storage
         JSONentriesArr = JSON.stringify(entriesArr);
