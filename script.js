@@ -3,12 +3,11 @@
 //  -entries array
 //  -current day/time using moment object
 
-var currentDayEl = $("#currentDay");
-var hourEl = $(".hour");
 var entriesArr = [];
 var currentDay = moment();
 var currentHour = currentDay.format("H");
 var currentDayHeader = currentDay.format("dddd, MMMM Do, YYYY");
+var currentDayEl = $("#currentDay");
 
 
 // Adds event handler for every time the user clicks a save button:
@@ -28,7 +27,6 @@ $(document).ready(function() {
 
         // push new entry and time into entries array
         filterArr.push({ time: timeVar, entry: entry });
-
         entriesArr = filterArr;
 
         // saves entries array to local storage
@@ -53,39 +51,39 @@ function getStorage() {
 
 // Defines a function that renders entries from local storage to the DOM
 function renderEntries() {
-
-    // loops over entries array
     for (var i = 0; i < entriesArr.length; i++) {
+        var hourEl = $(".hour");
 
-        // loops over hour elemnts from HTML - saves to correct time block if times match
-        for (var j = 9; j < 18; j++) {
-            if (entriesArr[i].time === $("#" + j + "-hour").text()) {
-                $("#" + j + "-description").text(entriesArr[i].entry);
+        hourEl.each(function() {
+            var description = $(this).parent().next();
+
+            if (entriesArr[i].time === $(this).text()) {
+                description.text(entriesArr[i].entry);
             }
-        }
-    }
+        })
+    };
 };
 
 
 // Defines a function that colors each time block 
 //  -by adding a different class
-//  -based on time of day compared to current hour
+//  -based on time each block represents compared to current hour
 function colorBlocks() {
+    var descriptionEl = $(".description");
+    var hour = parseInt(currentHour);
 
-    // loops through description elements 
-    for (var i = 9; i < 18; i++) {
-        var descriptionEl = $("#" + i + "-description")
-        var hour = parseInt(currentHour);
-        if (hour === parseInt(descriptionEl.attr("data-time"))) {
-            descriptionEl.addClass("present");
-        } else if (hour > parseInt(descriptionEl.attr("data-time"))) {
-            descriptionEl.addClass("past");
-        } else if (hour < parseInt(descriptionEl.attr("data-time"))) {
-            descriptionEl.addClass("future");
+    descriptionEl.each(function() {
+        var hourData = parseInt($(this).attr("data-time"));
+        
+        if (hour === hourData) {
+            $(this).addClass("present");
+        } else if (hour > hourData) {
+            $(this).addClass("past");
+        } else if (hour < hourData) {
+            $(this).addClass("future");
         };
-    }
+    })
 };
-
 
 // Defines an initialize function
 function init() {
