@@ -1,7 +1,10 @@
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
-  line-height: 1;
+}
+
+.lead{
+  line-height: 1.2;
 }
 
 .form-control {
@@ -129,6 +132,7 @@ textarea{
   h1 {
     font-size: 48px;
   }
+  
 }
 
 @media only screen and (min-width: 430px) {
