@@ -23,6 +23,12 @@ h1 {
   font-size: 68px;
 }
 
+.row {
+  white-space: pre-wrap;
+  height: 80px;
+  border-top: 1px solid white;;
+}
+
 .description{
   white-space: pre-wrap;
   border-left: 1px solid black;
@@ -42,17 +48,19 @@ textarea{
   border-radius: 15px;
 }
 
-.row {
-  white-space: pre-wrap;
-  height: 80px;
-  border-top: 1px solid white;;
-}
-
 .hour {
   background-color: #ffffff;
   color: #000000;
   border-top: 1px solid #000000;
   padding: 10px;
+}
+
+#desc9 {
+  border-top: 1px solid black;
+}
+
+#desc17, #hour17 {
+  border-bottom: 1px solid black;
 }
 
 .past, .past:focus {
@@ -103,19 +111,9 @@ textarea{
   padding-right: 1.5rem;
 }
 
-#desc9 {
-  border-top: 1px solid black;
-}
-
-#desc17, #hour17 {
-  border-bottom: 1px solid black;
-}
-
 #clear-btn:hover {
   background-color: rgb(0, 136, 248);
 }
-
-
 
 
 /* Media Queries */
@@ -133,13 +131,11 @@ textarea{
   }
 }
 
-
 @media only screen and (min-width: 430px) {
     h1 {
     font-size: 68px;
   }
 }
-
 
 @media only screen and (min-width: 768px) {
   .saveBtn {

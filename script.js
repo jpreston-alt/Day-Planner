@@ -10,9 +10,30 @@ var currentDayHeader = currentDay.format("dddd, MMMM Do, YYYY");
 var currentDayEl = $("#currentDay");
 
 
-// Adds event handler for every time the user clicks a save button:
+// Colors each time block by adding a class, colored based on hour displayed in time block compared to current hour
+function colorBlocks() {
+    var descriptionEl = $(".description");
+    var hour = parseInt(currentHour);
+
+    // loops through each description
+    descriptionEl.each(function () {
+        var hourData = parseInt($(this).attr("data-time"));
+
+        if (hour === hourData) {
+            $(this).addClass("present");
+        } else if (hour > hourData) {
+            $(this).addClass("past");
+        } else if (hour < hourData) {
+            $(this).addClass("future");
+        };
+    })
+};
+
+
+// Adds event listeners
 $(document).ready(function() {
 
+    // when user clicks a save button
     $(".input-group").on("submit", function(event) {
         event.preventDefault();
 
@@ -29,27 +50,29 @@ $(document).ready(function() {
         filterArr.push({ time: timeVar, entry: entry });
         entriesArr = filterArr;
 
+        // push array to local storage
         pushStorage();
     });
 
-
+    // when user clicks clear button
     $("#clear-btn").on("click", function(event) {
         event.preventDefault();
 
+        $("textarea").val("");
         entriesArr = [];
-        $("textarea").empty();
         pushStorage();
     })
 });
 
-// saves entries array to local storage
+
+// Saves entries array to local storage
 function pushStorage() {
     JSONentriesArr = JSON.stringify(entriesArr);
     localStorage.setItem("entries", JSONentriesArr);
-}
+};
 
 
-// Defines a function that pulls entries from local storage and renders to DOM
+// Pulls entries from local storage and renders to DOM
 function getStorage() {
     var entries = localStorage.getItem("entries");
     var JSONentries = JSON.parse(entries);
@@ -62,14 +85,18 @@ function getStorage() {
 };
 
 
-// Defines a function that renders entries from local storage to the DOM
+// Renders entries from local storage to the DOM
 function renderEntries() {
+    
+    // loops through entries array pulled from storage
     for (var i = 0; i < entriesArr.length; i++) {
         var hourEl = $(".hour");
 
+        // for each hour element
         hourEl.each(function() {
             var description = $(this).parent().next();
 
+            // if time block hour matches entry array hour, render this entry to this timeblock
             if (entriesArr[i].time === $(this).text()) {
                 description.text(entriesArr[i].entry);
             }
@@ -78,38 +105,10 @@ function renderEntries() {
 };
 
 
-// Defines a function that colors each time block 
-//  -by adding a different class
-//  -based on time each block represents compared to current hour
-function colorBlocks() {
-    var descriptionEl = $(".description");
-    var hour = parseInt(currentHour);
-
-    descriptionEl.each(function() {
-        var hourData = parseInt($(this).attr("data-time"));
-        
-        if (hour === hourData) {
-            $(this).addClass("present");
-        } else if (hour > hourData) {
-            $(this).addClass("past");
-        } else if (hour < hourData) {
-            $(this).addClass("future");
-        };
-    })
-};
-
-
-
-// Defines an initialize function
+// Defines an initialize function - pulls from local storage, inserts current day into header, colors time blocks
 function init() {
-
-    // pulls from local storage
     getStorage();
-
-    // Insert current day into header
     currentDayEl.text(currentDayHeader);
-
-    // colors time blocks
     colorBlocks();
 };
 
