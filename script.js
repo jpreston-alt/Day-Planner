@@ -21,19 +21,32 @@ $(document).ready(function() {
         var timeVar = $(this).find(".hour").text();
 
         // filter entries array so any entries with the same time are deleted
-        var filterArr = entriesArr.filter(function(e){
-            return e.time !== timeVar;
+        var filterArr = entriesArr.filter(function(arr){
+            return arr.time !== timeVar;
         });
 
         // push new entry and time into entries array
         filterArr.push({ time: timeVar, entry: entry });
         entriesArr = filterArr;
 
-        // saves entries array to local storage
-        JSONentriesArr = JSON.stringify(entriesArr);
-        localStorage.setItem("entries", JSONentriesArr);
+        pushStorage();
     });
+
+
+    $("#clear-btn").on("click", function(event) {
+        event.preventDefault();
+
+        entriesArr = [];
+        $("textarea").empty();
+        pushStorage();
+    })
 });
+
+// saves entries array to local storage
+function pushStorage() {
+    JSONentriesArr = JSON.stringify(entriesArr);
+    localStorage.setItem("entries", JSONentriesArr);
+}
 
 
 // Defines a function that pulls entries from local storage and renders to DOM
@@ -84,6 +97,8 @@ function colorBlocks() {
         };
     })
 };
+
+
 
 // Defines an initialize function
 function init() {
